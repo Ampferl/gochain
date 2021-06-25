@@ -1,7 +1,15 @@
 # Blockchain written in GO
 `gochain` is a simple proof-of-work blockchain written in go.  
 ## CLI Commands
-Create Blockchain:
+Create Address:
+```shell
+$ go run . createaddress
+```
+List all Addresses:
+```shell
+$ go run . listaddresses
+```
+Create Blockchain with created Address:
 ```shell
 $ go run . createblockchain -address <address>
 ```
