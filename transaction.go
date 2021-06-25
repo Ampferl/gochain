@@ -22,6 +22,22 @@ type Transaction struct {
 	Vout []TXOutput
 }
 
+type TXInput struct {
+	Txid      []byte
+	Vout      int
+	Signature []byte
+	PubKey    []byte
+}
+
+type TXOutput struct {
+	Value      int
+	PubKeyHash []byte
+}
+
+type TXOutputs struct {
+	Outputs []TXOutput
+}
+
 func (tx Transaction) IsCoinbase() bool {
 	return len(tx.Vin) == 1 && len(tx.Vin[0].Txid) == 0 && tx.Vin[0].Vout == -1
 }
@@ -37,18 +53,6 @@ func (tx *Transaction) SetID() {
 	}
 	hash = sha256.Sum256(encoded.Bytes())
 	tx.ID = hash[:]
-}
-
-type TXInput struct {
-	Txid      []byte
-	Vout      int
-	Signature []byte
-	PubKey    []byte
-}
-
-type TXOutput struct {
-	Value      int
-	PubKeyHash []byte
 }
 
 func (in *TXInput) UsesKey(pubKeyHash []byte) bool {
@@ -126,7 +130,6 @@ func (out *TXOutput) Lock(address []byte) {
 	pubKeyHash = pubKeyHash[1 : len(pubKeyHash)-4]
 	out.PubKeyHash = pubKeyHash
 }
-
 func (tx Transaction) Serialize() []byte {
 	var encoded bytes.Buffer
 
@@ -137,6 +140,30 @@ func (tx Transaction) Serialize() []byte {
 	}
 
 	return encoded.Bytes()
+}
+
+func (outs TXOutputs) Serialize() []byte {
+	var buff bytes.Buffer
+
+	enc := gob.NewEncoder(&buff)
+	err := enc.Encode(outs)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	return buff.Bytes()
+}
+
+func DeserializeOutputs(data []byte) TXOutputs {
+	var outputs TXOutputs
+
+	dec := gob.NewDecoder(bytes.NewReader(data))
+	err := dec.Decode(&outputs)
+	if err != nil {
+		log.Panic(err)
+	}
+
+	return outputs
 }
 
 func (tx *Transaction) Hash() []byte {

@@ -26,7 +26,7 @@ type BlockchainIterator struct {
 	db          *bolt.DB
 }
 
-func (bc *Blockchain) MineBlock(transactions []*Transaction) {
+func (bc *Blockchain) MineBlock(transactions []*Transaction) *Block {
 	var lastHash []byte
 
 	for _, tx := range transactions {
@@ -66,6 +66,8 @@ func (bc *Blockchain) MineBlock(transactions []*Transaction) {
 	if err != nil {
 		log.Panic(err)
 	}
+
+	return newBlock
 }
 
 func (bc *Blockchain) FindTransaction(ID []byte) (Transaction, error) {
@@ -132,20 +134,46 @@ func (bc *Blockchain) FindUnspentTransactions(pubKeyHash []byte) []Transaction {
 
 	return unspentTXs
 }
+func (bc *Blockchain) FindUTXO() map[string]TXOutputs {
+	UTXO := make(map[string]TXOutputs)
+	spentTXOs := make(map[string][]int)
+	bci := bc.Iterator()
 
-func (bc *Blockchain) FindUTXO(pubKeyHash []byte) []TXOutput {
-	var UTXOs []TXOutput
-	unspentTransactions := bc.FindUnspentTransactions(pubKeyHash)
+	for {
+		block := bci.Next()
 
-	for _, tx := range unspentTransactions {
-		for _, out := range tx.Vout {
-			if out.IsLockedWithKey(pubKeyHash) {
-				UTXOs = append(UTXOs, out)
+		for _, tx := range block.Transactions {
+			txID := hex.EncodeToString(tx.ID)
+
+		Outputs:
+			for outIdx, out := range tx.Vout {
+				if spentTXOs[txID] != nil {
+					for _, spentOutIdx := range spentTXOs[txID] {
+						if spentOutIdx == outIdx {
+							continue Outputs
+						}
+					}
+				}
+
+				outs := UTXO[txID]
+				outs.Outputs = append(outs.Outputs, out)
+				UTXO[txID] = outs
 			}
+
+			if tx.IsCoinbase() == false {
+				for _, in := range tx.Vin {
+					inTxID := hex.EncodeToString(in.Txid)
+					spentTXOs[inTxID] = append(spentTXOs[inTxID], in.Vout)
+				}
+			}
+		}
+
+		if len(block.PrevBlockHash) == 0 {
+			break
 		}
 	}
 
-	return UTXOs
+	return UTXO
 }
 
 func (bc *Blockchain) FindSpendableOutputs(pubKeyHash []byte, amount int) (int, map[string][]int) {
@@ -206,7 +234,7 @@ func dbExists() bool {
 	return true
 }
 
-func NewBlockchain(address string) *Blockchain {
+func NewBlockchain() *Blockchain {
 	if !dbExists() {
 		fmt.Println("No existing blockchain found. Create one first.")
 		os.Exit(1)
