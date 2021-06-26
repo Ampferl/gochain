@@ -1,5 +1,30 @@
+<p align="center">
+    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.icons8.com%2Fcolor%2F1600%2Fblockchain-new-logo.png&f=1&nofb=1" width="125px">
+</p>
+
+<div style="text-align:center">
+
+<p align="center">
+
+<img src="https://img.shields.io/tokei/lines/github/Ampferl/gochain">
+<img src="https://img.shields.io/github/languages/code-size/Ampferl/gochain?label=Code%20Size" />
+<img src="https://img.shields.io/github/stars/Ampferl/gochain?label=Stars&logo=github" />
+
+</p>
+
+</div>
+
 # Blockchain written in GO
 `gochain` is a simple proof-of-work blockchain written in go.  
+## Features
+- [X] Proof-Of-Work
+- [X] Persistence
+- [X] CLI
+- [X] Transactions
+- [X] Addresses
+- [X] Merkle Tree
+- [X] Network
+- [ ] Target Adjusting Algorithm
 ## How to run the gochain network
 First, set `NODE_ID` to 3000 (`export NODE_ID=3000`) in the first terminal window. 
 Create a wallet and a new blockchain on the NODE 3000 terminal:
@@ -94,3 +119,8 @@ Balance of 'WALLET_1': 8
 
 ## Ressources
 - [Blockchain für Entwickler](https://www.amazon.de/Blockchain-f%C3%BCr-Entwickler-Programmierung-Praxisbeispielen/dp/3836263904)
+
+## Contact
+- Email: contact@chaepy.net
+- About: https://jonas.ampferl.com/
+
