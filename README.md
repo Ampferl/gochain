@@ -1,5 +1,5 @@
 <p align="center">
-    <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.icons8.com%2Fcolor%2F1600%2Fblockchain-new-logo.png&f=1&nofb=1" width="125px">
+    <img src="https://i.imgur.com/BY0Y12Z.png" width="250px">
 </p>
 
 <div style="text-align:center">
@@ -14,8 +14,8 @@
 
 </div>
 
-# Blockchain written in GO
-`gochain` is a simple proof-of-work blockchain written in go.  
+# gochain
+`gochain` is a proof-of-work blockchain written in go.  
 ## Features
 - [X] Proof-Of-Work
 - [X] Persistence
