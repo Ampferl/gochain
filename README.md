@@ -24,7 +24,6 @@
 - [X] Addresses
 - [X] Merkle Tree
 - [X] Network
-- [ ] Target Adjusting Algorithm
 ## How to run the gochain network
 First, set `NODE_ID` to 3000 (`export NODE_ID=3000`) in the first terminal window. 
 Create a wallet and a new blockchain on the NODE 3000 terminal:
@@ -116,6 +115,12 @@ Stop it and check balances:
 $ go run . getbalance -address <address3001>
 Balance of 'WALLET_1': 8
 ```
+
+## Research and ToDos
+- [ ] Target Adjusting Algorithm
+- [ ] Sharding
+- [ ] Test other consensus methods
+- [ ] Block Explorer (Web)
 
 ## Ressources
 - [Blockchain für Entwickler](https://www.amazon.de/Blockchain-f%C3%BCr-Entwickler-Programmierung-Praxisbeispielen/dp/3836263904)
