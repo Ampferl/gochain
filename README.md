@@ -38,7 +38,7 @@ After that, the blockchain will contain only the genesis block. We need to save 
 $ cp blockchain_3000.db blockchain_genesis.db 
 ```
 ---
-Next, open a the terminal window of your second Node and set node ID to 3001. This will be a wallet node. Generate some addresses with `go run .createwallet`.
+Next, open a new terminal window of your second Node and set node ID to 3001. This will be a wallet node. Generate some addresses with `go run .createwallet`.
 
 Back to the first window send some coins to the wallet addresses:
 
